@@ -60,8 +60,8 @@
                  data-aos="zoom-in">
                 <img src="{{ asset('images/SneakForce Team/Ahmad-Amlani-Salsalani.jpg') }}"
                      class="rounded-full w-32 h-32 mx-auto mb-4">
-                <h3 class="text-white font-semibold">Ahmad Amlani Salsalani</h3>
-                <p class="text-gray-400 text-sm">Founder & CEO<br>Project Manager<br>Solar System Looper<br>UCLM Looper<br>2 out of 5 fat person</p>
+                <h3 class="text-white font-semibold">Ahmad Jamil Amlani</h3>
+                <p class="text-gray-400 text-sm">Lead Desginer<br>Hipster</p>
             </div>
 
             <div class="bg-neutral-900 rounded-2xl p-5 border border-neutral-800 text-center"
@@ -69,7 +69,7 @@
                 <img src="{{ asset('images/SneakForce Team/JanDaeveLouis-Nunez.jpg') }}"
                      class="rounded-full w-32 h-32 mx-auto mb-4">
                 <h3 class="text-white font-semibold">Jan Daeve Louis P. Nunez</h3>
-                <p class="text-gray-400 text-sm">Head of Design</p>
+                <p class="text-gray-400 text-sm">Project Manager<br>Hacker</p>
             </div>
 
             <div class="bg-neutral-900 rounded-2xl p-5 border border-neutral-800 text-center"

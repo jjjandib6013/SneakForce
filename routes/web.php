@@ -8,10 +8,15 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Product;
 
 // Public routes
 Route::get('/', function () {
-    return view('welcome');
+
+    $products = Product::all();
+
+
+    return view('welcome', compact('products'));
 });
 
 Route::get('/about', function () {
@@ -56,11 +61,21 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+
+        Route::post('/orders/cancel', [OrderController::class, 'cancel'])
+        ->name('orders.cancel');
+
+    Route::post('/orders/update-status', [OrderController::class, 'updateStatus'])
+    ->name('orders.updateStatus');
 });
 
 // Dashboard (authenticated + verified)
 Route::get('/dashboard', function () {
-    return view('dashboard');
+        $products = Product::all();
+
+
+    return view('dashboard', compact('products'));
+
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Admin routes (authenticated)

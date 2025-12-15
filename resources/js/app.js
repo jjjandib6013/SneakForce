@@ -19,4 +19,3 @@ function updateCartCounter() {
             if (counter) counter.textContent = data.count || 0;
         });
 }
--

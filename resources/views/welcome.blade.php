@@ -11,12 +11,12 @@
             </p>
 
             <div class="flex gap-5 pt-5">
-                <a href="#collections"
+                <a href="{{ route('collection') }}"
                    class="px-6 py-3 bg-sky-500 rounded-xl font-bold hover:bg-sky-400 transition transform hover:scale-110 active:scale-95">
                     Shop Now
                 </a>
 
-                <a href="#collections"
+                <a href="{{ route('collection') }}"
                    class="px-6 py-3 border border-gray-500 rounded-xl font-semibold hover:bg-gray-800 transition transform hover:scale-105">
                     Explore Collection
                 </a>
@@ -38,57 +38,17 @@
         SneakForce Collections
     </h2>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
-
-    <!-- Collection Card 1 -->
-    <div class="bg-neutral-900 rounded-2xl p-5 transition transform hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(0,200,255,0.3)] flex flex-col"
-         style="height: 512px;" data-aos="zoom-in">
-        <div class="flex-1 w-full overflow-hidden rounded-xl mb-4">
-            <img src=""
-                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-12">
+            @forelse ($products as $product)
+                <!-- Pass a dynamic 'name' attribute to the component -->
+                <x-product-card 
+                    :product="$product" 
+                    :name="'addToCart-' . $loop->iteration" 
+                />
+            @empty
+                <p class="text-gray-400 text-center col-span-full">No products yet</p>
+            @endforelse
         </div>
-        <h3 class="text-lg font-semibold text-white">Air Jordan Collection</h3>
-        <p class="text-gray-400 text-sm mb-2">Classic icons, street-ready style.</p>
-        <span class="text-sky-400 font-bold">₱15,999+</span>
-    </div>
-
-    <!-- Collection Card 2 -->
-    <div class="bg-neutral-900 rounded-2xl p-5 transition transform hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(0,200,255,0.3)] flex flex-col"
-         style="height: 512px;" data-aos="zoom-in" data-aos-delay="100">
-        <div class="flex-1 w-full overflow-hidden rounded-xl mb-4">
-            <img src="{{ asset('images/shoes/AirMaxSeries.png') }}"
-                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
-        </div>
-        <h3 class="text-lg font-semibold text-white">AirMax Series</h3>
-        <p class="text-gray-400 text-sm mb-2">Next-level comfort for runners.</p>
-        <span class="text-sky-400 font-bold">₱12,500+</span>
-    </div>
-
-    <!-- Collection Card 3 -->
-    <div class="bg-neutral-900 rounded-2xl p-5 transition transform hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(0,200,255,0.3)] flex flex-col"
-         style="height: 512px;" data-aos="zoom-in" data-aos-delay="200">
-        <div class="flex-1 w-full overflow-hidden rounded-xl mb-4">
-            <img src=""
-                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
-        </div>
-        <h3 class="text-lg font-semibold text-white">Runner Z-Boost</h3>
-        <p class="text-gray-400 text-sm mb-2">Engineered for speed & comfort.</p>
-        <span class="text-sky-400 font-bold">₱14,200+</span>
-    </div>
-
-    <!-- Collection Card 4 -->
-    <div class="bg-neutral-900 rounded-2xl p-5 transition transform hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(0,200,255,0.3)] flex flex-col"
-         style="height: 512px;" data-aos="zoom-in" data-aos-delay="300">
-        <div class="flex-1 w-full overflow-hidden rounded-xl mb-4">
-            <img src=""
-                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
-        </div>
-        <h3 class="text-lg font-semibold text-white">Street Hype Kicks</h3>
-        <p class="text-gray-400 text-sm mb-2">Bold style for urban streets.</p>
-        <span class="text-sky-400 font-bold">₱13,800+</span>
-    </div>
-
-</div>
 
 </section>
 

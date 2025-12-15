@@ -87,38 +87,16 @@
             Recommended For You
         </h2>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-
-            <div class="bg-neutral-900 rounded-2xl p-5 border border-neutral-800 transition 
-                        hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(0,200,255,0.3)]"
-                 data-aos="zoom-in">
-                <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b8031"
-                     class="rounded-xl mb-4 w-full">
-                <h3 class="text-lg font-semibold text-white">Air Jordan Pro</h3>
-                <p class="text-gray-400 text-sm mb-2">Basketball icon reinvented.</p>
-                <span class="text-sky-400 font-bold">₱18,500</span>
-            </div>
-
-            <div class="bg-neutral-900 rounded-2xl p-5 border border-neutral-800 transition 
-                        hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(0,200,255,0.3)]"
-                 data-aos="zoom-in" data-aos-delay="100">
-                <img src="{{ asset('images/shoes/AirMaxSeries.png') }}"
-                     class="rounded-xl mb-4 w-full">
-                <h3 class="text-lg font-semibold text-white">AirMax Velocity</h3>
-                <p class="text-gray-400 text-sm mb-2">Designed for everyday comfort.</p>
-                <span class="text-sky-400 font-bold">₱13,200</span>
-            </div>
-
-            <div class="bg-neutral-900 rounded-2xl p-5 border border-neutral-800 transition 
-                        hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(0,200,255,0.3)]"
-                 data-aos="zoom-in" data-aos-delay="200">
-                <img src="https://images.unsplash.com/photo-1597045566677-8cfef09f242c"
-                     class="rounded-xl mb-4 w-full">
-                <h3 class="text-lg font-semibold text-white">Runner Z-Boost+</h3>
-                <p class="text-gray-400 text-sm mb-2">Enhanced energy return for athletes.</p>
-                <span class="text-sky-400 font-bold">₱16,800</span>
-            </div>
-
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-12">
+            @forelse ($products as $product)
+                <!-- Pass a dynamic 'name' attribute to the component -->
+                <x-product-card 
+                    :product="$product" 
+                    :name="'addToCart-' . $loop->iteration" 
+                />
+            @empty
+                <p class="text-gray-400 text-center col-span-full">No products yet</p>
+            @endforelse
         </div>
 
 

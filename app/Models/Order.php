@@ -19,6 +19,8 @@ class Order extends Model
         'province',
         'postal_code',
         'status',
+        'cancel_reason',
+        'cancelled_at',
     ];
 
     public function items()

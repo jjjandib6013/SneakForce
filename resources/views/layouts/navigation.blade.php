@@ -30,6 +30,12 @@
     @auth
          <!-- Right section: Cart, Orders, Auth --> 
     <div class="flex items-center space-x-4">
+        @if(Auth::user()->is_admin)
+            <a href="{{ route('admin.products.index') }}"
+            class="px-3 py-2 text-sm font-semibold border border-sky-400 text-sky-400 rounded-lg hover:bg-sky-400 hover:text-black transition">
+                Manage Products
+            </a>
+        @endif
         <!-- Cart icon with dynamic counter -->
         <a href="{{ route('cart.index') }}" name="cart" class="relative hover:text-gray-300 transition">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,7 +57,13 @@
                     <x-slot name="trigger">
                         <button
                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-gray-200 bg-neutral-900 hover:text-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400 transition-colors duration-300">
-                            <div>{{ Auth::user()->name }}</div>
+                            <div>
+                                {{ Auth::user()->name }}
+                                @if(Auth::user()->is_admin)
+                                    <span class="ml-1 text-xs text-sky-400 font-semibold">@admin</span>
+                                @endif
+                            </div>
+
                             <div class="ml-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
