@@ -48,7 +48,7 @@
             <textarea
                 name="note"
                 rows="3"
-                placeholder="Type here..."
+                placeholder="Type here.q.."
                 class="w-full bg-neutral-800 text-white rounded-xl px-4 py-3 mb-6"></textarea>
 
             <!-- ACTIONS -->

@@ -3,8 +3,17 @@
         Welcome
     </h2>
 
-    <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
+
+    @if ($errors->any())
+        <div class="mb-4 rounded-xl bg-red-500/10 border border-red-500/30 p-4">
+            <ul class="text-sm text-red-400 space-y-1">
+                @foreach ($errors->all() as $error)
+                    <li>• {{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <form method="POST" action="{{ route('login') }}" data-aos="fade-up">
         @csrf
@@ -60,7 +69,7 @@
                 </a>
             @endif
 
-            <x-primary-button name="submit" class="px-6 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-black" href="https://localhost:8000/dashboard">
+            <x-primary-button class="px-6 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-black">
                 {{ __('Log in') }}
             </x-primary-button>
         </div>

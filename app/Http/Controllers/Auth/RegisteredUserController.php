@@ -29,16 +29,53 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        $validated = $request->validate(
+            [
+                // Name: letters + spaces only, no numbers
+                'name' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    'regex:/^[a-zA-Z\s]+$/'
+                ],
 
+                // Email validation
+                'email' => [
+                    'required',
+                    'string',
+                    'email:rfc,dns',
+                    'max:255',
+                    'unique:users,email'
+                ],
+
+                // Strong password validation
+                'password' => [
+                    'required',
+                    'confirmed',
+                    Rules\Password::min(8)
+                        ->mixedCase()     // upper + lower case
+                        ->numbers()       // at least one number
+                        ->symbols()       // at least one symbol
+                        ->uncompromised() // checks against leaked passwords
+                ],
+            ],
+            [
+                // Custom error messages
+                'name.required' => 'Your name is required.',
+                'name.regex' => 'Your name must only contain letters and spaces.',
+                'email.required' => 'Email address is required.',
+                'email.email' => 'Please provide a valid email address.',
+                'email.unique' => 'This email address is already registered.',
+                'password.required' => 'Password is required.',
+                'password.confirmed' => 'Password confirmation does not match.',
+            ]
+        );
+
+        // Create user using validated data
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
         ]);
 
         event(new Registered($user));
