@@ -1,190 +1,155 @@
 <x-app-layout>
+<section class="min-h-screen bg-neutral-950 py-14 px-6">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-4xl font-bold text-white mb-10">Checkout</h1>
 
-    {{-- PAGE HERO --}}
-    <section class="h-40 sm:h-56 flex items-center px-10 bg-gradient-to-b from-neutral-900 to-black">
-        <div data-aos="fade-right">
-            <h1 class="text-4xl sm:text-5xl font-bold text-white">Checkout</h1>
-            <p class="text-gray-400 mt-2">Almost there! Complete your order!</p>
-        </div>
-    </section>
+        <form action="{{ route('checkout.store') }}" method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            @csrf
 
-    <section class="py-20 px-10 bg-black min-h-screen">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 xl:grid-cols-3 gap-10">
+            {{-- LEFT --}}
+            <div class="lg:col-span-2 space-y-10">
 
-            {{-- LEFT SIDE: FORMS --}}
-            <div class="xl:col-span-2 space-y-10">
+                {{-- CONTACT --}}
+                <div class="bg-neutral-900 p-8 rounded-3xl border border-neutral-800">
+                    <h2 class="text-xl font-semibold text-white mb-6">Contact Info</h2>
+                    <div class="grid sm:grid-cols-2 gap-5">
+                        <input name="full_name" placeholder="Full Name"
+                            value="{{ old('full_name', $prefill->user_name ?? auth()->user()->name) }}"
+                            class="checkout-input text-black">
 
-                <form action="{{ route('checkout.store') }}" method="POST">
-                    @csrf
+                        <input name="email" type="email" placeholder="Email"
+                            value="{{ old('email', $prefill->user_email ?? auth()->user()->email) }}"
+                            class="checkout-input text-black">
 
-                    {{-- CONTACT INFO --}}
-                    <div class="bg-neutral-900 p-8 rounded-2xl border border-neutral-800">
-                        <h2 class="text-2xl font-bold text-white mb-6">Contact Information</h2>
+                        <input name="phone" placeholder="Phone Number"
+                            value="{{ old('phone', $prefill->phone ?? auth()->user()->phone) }}"
+                            class="checkout-input sm:col-span-2 text-black">
+                    </div>
+                </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <input type="text" placeholder="Full Name" name="full_name"
-                                   value="{{ old('full_name', auth()->user()->name) }}"
-                                   class="px-4 py-3 rounded-xl bg-neutral-800 text-white">
+                {{-- SHIPPING --}}
+                <div class="bg-neutral-900 p-8 rounded-3xl border border-neutral-800">
+                    <h2 class="text-xl font-semibold text-white mb-6">Shipping Address</h2>
+                    <div class="grid sm:grid-cols-2 gap-5">
+                        <input name="address" placeholder="Street Address"
+                            value="{{ old('address', $prefill->address ?? auth()->user()->address) }}"
+                            class="checkout-input sm:col-span-2 text-black">
 
-                            <input type="email" placeholder="Email Address" name="email"
-                                   value="{{ old('email', auth()->user()->email) }}"
-                                   class="px-4 py-3 rounded-xl bg-neutral-800 text-white">
+                        <input name="city" placeholder="City"
+                            value="{{ old('city', $prefill->city ?? auth()->user()->city) }}"
+                            class="checkout-input text-black">
 
-                            <input type="text" placeholder="Phone Number" name="phone"
-                                   value="{{ old('phone', auth()->user()->phone) }}"
-                                   class="px-4 py-3 rounded-xl bg-neutral-800 text-white sm:col-span-2">
-                        </div>
+                        <input name="province" placeholder="Province"
+                            value="{{ old('province', $prefill->province ?? auth()->user()->province) }}"
+                            class="checkout-input text-black">
+
+                        <input name="postal_code" placeholder="Postal Code"
+                            value="{{ old('postal_code', $prefill->postal_code ?? auth()->user()->postal_code) }}"
+                            class="checkout-input text-black">
+
+                        <input type="hidden" name="country" value="Philippines">
+                    </div>
+                </div>
+
+                {{-- PAYMENT --}}
+                <div class="bg-neutral-900 p-8 rounded-3xl border border-neutral-800">
+                    <h2 class="text-xl font-semibold text-white mb-6">Payment Method</h2>
+
+                    <div class="grid sm:grid-cols-3 gap-5">
+                        <button type="button" data-method="cod" class="pay-btn h-12 rounded-lg">💵 Cash on Delivery</button>
+                        <button type="button" data-method="gcash" class="pay-btn h-12 rounded-lg">📱 GCash</button>
+                        <button type="button" data-method="card" class="pay-btn h-12 rounded-lg">💳 Card</button>
                     </div>
 
-                    {{-- SHIPPING INFO --}}
-                    <div class="bg-neutral-900 p-8 rounded-2xl border border-neutral-800">
-                        <h2 class="text-2xl font-bold text-white mb-6">Shipping Address</h2
+                    <input type="hidden" name="payment_method" id="payment_method">
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <input type="text" placeholder="Address Line 1" name="address"
-                                   value="{{ old('address', auth()->user()->address) }}"
-                                   class="px-4 py-3 rounded-xl bg-neutral-800 text-white sm:col-span-2">
-
-                            <input type="text" placeholder="City" name="city"
-                                   value="{{ old('city', auth()->user()->city) }}"
-                                   class="px-4 py-3 rounded-xl bg-neutral-800 text-white">
-
-                            <input type="text" placeholder="Province" name="province"
-                                   value="{{ old('province', auth()->user()->province) }}"
-                                   class="px-4 py-3 rounded-xl bg-neutral-800 text-white">
-
-                            <input type="text" placeholder="Postal Code" name="postal_code"
-                                   value="{{ old('postal_code', auth()->user()->postal_code) }}"
-                                   class="px-4 py-3 rounded-xl bg-neutral-800 text-white">
-
-                            <select name="country" class="px-4 py-3 rounded-xl bg-neutral-800 text-white">
-                                <option value="Philippines" selected>Philippines</option>
-                            </select>
-                        </div>
+                    {{-- CARD DETAILS --}}
+                    <div id="cardFields" class="hidden mt-6 grid sm:grid-cols-2 gap-4 opacity-0 transform translate-y-4 transition-all duration-300">
+                        <input name="card_number" placeholder="Card Number" class="checkout-input sm:col-span-2 text-black">
+                        <input name="card_expiration" placeholder="MM / YY" class="checkout-input text-black">
+                        <input name="card_cvv" placeholder="CVV" class="checkout-input text-black">
                     </div>
+                </div>
 
-                    {{-- PAYMENT METHOD --}}
-                    <div class="bg-neutral-900 p-8 rounded-2xl border border-neutral-800">
-                        <h2 class="text-2xl font-bold text-white mb-6">Payment Method</h2>
-
-                        <div class="space-y-6">
-
-                            {{-- COD --}}
-                            <label class="flex items-center justify-between bg-neutral-800 p-5 rounded-xl cursor-pointer hover:bg-neutral-700 transition" name="cod">
-                                <div class="flex items-center gap-4">
-                                    <input type="radio" name="payment_method" value="cod" class="accent-sky-500" {{ old('payment_method') === 'cod' ? 'checked' : '' }}>
-                                    <span class="text-white font-semibold">Cash on Delivery</span>
-                                </div>
-                                <span class="text-gray-400 text-sm">Pay upon arrival</span>
-                            </label>
-
-                            {{-- GCASH --}}
-                            <label class="flex items-center justify-between bg-neutral-800 p-5 rounded-xl cursor-pointer hover:bg-neutral-700 transition">
-                                <div class="flex items-center gap-4">
-                                    <input type="radio" name="payment_method" value="gcash" class="accent-sky-500" {{ old('payment_method') === 'gcash' ? 'checked' : '' }}>
-                                    <span class="text-white font-semibold">GCash</span>
-                                </div>
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/GCash_logo.svg" class="h-6">
-                            </label>
-
-                            {{-- CARD --}}
-                            <label class="flex items-center justify-between bg-neutral-800 p-5 rounded-xl cursor-pointer hover:bg-neutral-700 transition">
-                                <div class="flex items-center gap-4">
-                                    <input type="radio" name="payment_method" value="card" class="accent-sky-500" {{ old('payment_method') === 'card' ? 'checked' : '' }}>
-                                    <span class="text-white font-semibold">Credit / Debit Card</span>
-                                </div>
-                                <div class="flex gap-2">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" class="h-6">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Mastercard-logo.png" class="h-6">
-                                </div>
-                            </label>
-
-                            {{-- CARD DETAILS --}}
-                            <div id="card-details" class="hidden mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <input type="text" name="card_number" placeholder="Card Number" class="px-4 py-3 rounded-xl bg-neutral-800 text-white sm:col-span-2">
-                                <input type="text" name="card_expiration" placeholder="Expiration (MM/YY)" class="px-4 py-3 rounded-xl bg-neutral-800 text-white">
-                                <input type="text" name="card_cvv" placeholder="CVV" class="px-4 py-3 rounded-xl bg-neutral-800 text-white">
-                            </div>
-
-                        </div>
-                    </div>
-
-                    {{-- PLACE ORDER BUTTON --}}
-                    <div class="text-right">
-                        <button type="submit" name="submit" class="mt-6 w-full sm:w-auto px-6 py-3 bg-sky-500 hover:bg-sky-400 text-black font-bold rounded-xl transition">
-                            Place Order
-                        </button>
-                    </div>
-
-                </form>
-
+                <button type="submit" name="submit" class="w-full py-4 rounded-2xl bg-sky-500 text-black font-bold text-lg hover:bg-sky-400 transition shadow-lg">Place Order</button>
             </div>
 
-            {{-- RIGHT SIDE: ORDER SUMMARY --}}
-            <div class="bg-neutral-900 p-8 rounded-2xl border border-neutral-800 h-fit">
-
-                <h2 class="text-2xl font-bold text-white mb-6">Order Summary</h2>
-
-                @php
-                    $total = $cart->sum(fn($item) => $item->product->price * $item->quantity);
-                @endphp
-
-                <div class="space-y-4">
+            {{-- RIGHT SUMMARY --}}
+            <div class="bg-neutral-900 p-8 rounded-3xl border border-neutral-800 h-fit sticky top-10">
+                <h2 class="text-xl font-semibold text-white mb-6">Order Summary</h2>
+                @php $total = $cart->sum(fn($i)=>$i->product->price*$i->quantity); @endphp
+                <div class="space-y-3 text-gray-300">
                     @foreach($cart as $item)
-                        <div class="flex justify-between text-gray-300">
-                            <span>{{ $item->product->name }} x {{ $item->quantity }}</span>
+                        <div class="flex justify-between">
+                            <span>{{ $item->product->name }} × {{ $item->quantity }}</span>
                             <span>₱{{ number_format($item->product->price * $item->quantity, 2) }}</span>
                         </div>
                     @endforeach
                 </div>
-
-                <div class="border-t border-neutral-800 mt-4 pt-4 flex justify-between text-white font-bold text-lg">
+                <div class="border-t border-neutral-800 mt-5 pt-4 flex justify-between text-white font-bold text-lg">
                     <span>Total</span>
                     <span>₱{{ number_format($total, 2) }}</span>
                 </div>
-
             </div>
-
-        </div>
-    </section>
-
-    <!-- Admin Toast Notification -->
-    <div 
-        x-data="{ show:false, message:'', timeout:null }"
-        x-init="
-            @if(session('checkout_success'))
-                message = '{{ session('checkout_success') }}';
-                show = true;
-                timeout = setTimeout(() => show = false, 2000);
-            @endif
-        "
-        class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[9999]"
-    >
-        <div 
-            x-show="show"
-            x-transition.duration.250ms
-            class="bg-green-600 border border-green-400 py-5 px-8 rounded-2xl shadow-lg flex items-center gap-3 text-white text-lg font-bold"
-        >
-            <span class="text-3xl">✔️</span>
-            <p x-text="message"></p>
-        </div>
+        </form>
     </div>
+</section>
 
+<script>
+const buttons = document.querySelectorAll('.pay-btn');
+const methodInput = document.getElementById('payment_method');
+const cardFields = document.getElementById('cardFields');
 
-    <script>
-        // Show card details only if card is selected
-        const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
-        const cardDetails = document.getElementById('card-details');
-
-        paymentRadios.forEach(radio => {
-            radio.addEventListener('change', () => {
-                if (radio.value === 'card' && radio.checked) {
-                    cardDetails.classList.remove('hidden');
-                } else {
-                    cardDetails.classList.add('hidden');
-                }
-            });
+buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // reset all buttons
+        buttons.forEach(b => {
+            b.classList.remove('border-sky-500','ring-2','ring-sky-500','scale-105','bg-gradient-to-r','from-sky-500','to-blue-400','animate-pulse');
+            b.classList.add('border-neutral-700','bg-neutral-900');
         });
-    </script>
 
+        // activate clicked
+        btn.classList.remove('border-neutral-700','bg-neutral-900');
+        btn.classList.add('border-sky-500','ring-2','ring-sky-500','scale-105','bg-gradient-to-r','from-sky-500','to-blue-400','animate-pulse');
+
+        // set value
+        methodInput.value = btn.dataset.method;
+
+        // toggle card fields
+        if(btn.dataset.method==='card'){
+            cardFields.classList.remove('hidden');
+            setTimeout(() => {
+                cardFields.classList.remove('opacity-0','translate-y-4');
+                cardFields.classList.add('opacity-100','translate-y-0');
+            },50);
+        } else {
+            cardFields.classList.add('opacity-0','translate-y-4');
+            setTimeout(()=>cardFields.classList.add('hidden'),200);
+        }
+    });
+});
+
+// Validate payment method before submit
+document.getElementById('checkoutForm').addEventListener('submit', function(e){
+    if(!methodInput.value){
+        e.preventDefault();
+        alert('Please select a payment method!');
+    }
+
+        const paymentMethod = "{{ old('payment_method', $prefill->payment_method ?? '') }}";
+    if(paymentMethod){
+        const btn = document.querySelector(`.pay-btn[data-method="${paymentMethod}"]`);
+        if(btn){ btn.click(); } // pre-select the payment method
+    }   
+});
+</script>
+
+<style>
+.pay-btn{
+    @apply w-full py-8 rounded-3xl text-white font-semibold bg-neutral-900 border border-neutral-700 transition-all duration-200 transform;
+}
+.checkout-input{
+    @apply px-4 py-3 rounded-xl bg-neutral-800 text-white border border-neutral-700 focus:ring-2 focus:ring-sky-500 focus:outline-none transition;
+}
+</style>
 </x-app-layout>

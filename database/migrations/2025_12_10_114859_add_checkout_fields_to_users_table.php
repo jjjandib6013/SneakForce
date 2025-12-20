@@ -13,9 +13,7 @@ class AddCheckoutFieldsToUsersTable extends Migration
             $table->string('address')->nullable();
             $table->string('city')->nullable();
             $table->string('province')->nullable();
-            $table->string('postal_code')->nullable();
-            $table->string('payment_method')->nullable();
-            $table->decimal('total', 8, 2)->nullable();  // You can adjust the decimal size based on your requirements
+            $table->string('postal_code')->nullable(); // You can adjust the decimal size based on your requirements
         });
     }
 
@@ -28,8 +26,6 @@ class AddCheckoutFieldsToUsersTable extends Migration
                 'city',
                 'province',
                 'postal_code',
-                'payment_method',
-                'total',
             ]);
         });
     }

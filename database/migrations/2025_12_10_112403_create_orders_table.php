@@ -15,15 +15,15 @@ return new class extends Migration
             // Order information
             $table->string('payment_method'); // e.g., COD, Credit Card, GCash
             $table->decimal('total', 10, 2);
+            $table->string('status')->default('pending'); // pending, paid, shipped, delivered
+            $table->string('order_number')->unique()->nullable();
 
             // Shipping information
-            $table->string('phone');
-            $table->string('address');
-            $table->string('city');
-            $table->string('province');
-            $table->string('postal_code');
-
-            $table->string('status')->default('pending'); // pending, paid, shipped, delivered
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('province')->nullable();
+            $table->string('postal_code')->nullable();
 
             $table->timestamps();
         });

@@ -111,14 +111,4 @@
 
     </div>
 
-    @if ($errors->any())
-    <div class="mb-4 rounded-xl bg-red-500/10 border border-red-500/30 p-4">
-        <ul class="text-sm text-red-400 space-y-1">
-            @foreach ($errors->all() as $error)
-                <li>• {{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
 </x-guest-layout>

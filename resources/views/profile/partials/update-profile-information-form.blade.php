@@ -13,6 +13,11 @@
         @csrf
         @method('patch')
 
+        @php
+            // Prefill from last order if exists, otherwise fallback to user info
+            $prefill = $user->orders()->latest()->first();
+        @endphp
+
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />
@@ -48,7 +53,7 @@
                 name="phone"
                 type="text"
                 class="mt-1 block w-full"
-                :value="old('phone', $user->phone)"
+                :value="old('phone', $prefill->phone ?? $user->phone)"
             />
             <x-input-error class="mt-2" :messages="$errors->get('phone')" />
         </div>
@@ -61,7 +66,7 @@
                 name="address"
                 type="text"
                 class="mt-1 block w-full"
-                :value="old('address', $user->address)"
+                :value="old('address', $prefill->address ?? $user->address)"
             />
             <x-input-error class="mt-2" :messages="$errors->get('address')" />
         </div>
@@ -74,7 +79,7 @@
                 name="city"
                 type="text"
                 class="mt-1 block w-full"
-                :value="old('city', $user->city)"
+                :value="old('city', $prefill->city ?? $user->city)"
             />
             <x-input-error class="mt-2" :messages="$errors->get('city')" />
         </div>
@@ -87,7 +92,7 @@
                 name="province"
                 type="text"
                 class="mt-1 block w-full"
-                :value="old('province', $user->province)"
+                :value="old('province', $prefill->province ?? $user->province)"
             />
             <x-input-error class="mt-2" :messages="$errors->get('province')" />
         </div>
@@ -100,7 +105,7 @@
                 name="postal_code"
                 type="text"
                 class="mt-1 block w-full"
-                :value="old('postal_code', $user->postal_code)"
+                :value="old('postal_code', $prefill->postal_code ?? $user->postal_code)"
             />
             <x-input-error class="mt-2" :messages="$errors->get('postal_code')" />
         </div>

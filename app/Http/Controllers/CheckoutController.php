@@ -18,19 +18,19 @@ class CheckoutController extends Controller
     {
         $user = Auth::user();
 
-        // Fetch user's cart items with related product info
-        $cart = Cart::with('product')
-            ->where('user_id', $user->id)
-            ->get();
-
-        // If cart is empty, redirect back to cart page with message
+        // Fetch cart items
+        $cart = $user->cart()->with('product')->get();
         if ($cart->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
 
+        // Pre-fill info with previous checkout/order data if available
+        $lastOrder = $user->orders()->latest()->first(); // latest order
+
         return view('checkout.index', [
             'cart' => $cart,
             'user' => $user,
+            'prefill' => $lastOrder, // could be null
         ]);
     }
 
@@ -56,7 +56,7 @@ class CheckoutController extends Controller
 
         DB::transaction(function () use ($user, $data) {
 
-            // Update user's personal info (optional)
+            // Optional: update user info
             $user->update([
                 'name' => $data['full_name'],
                 'email' => $data['email'],
@@ -68,17 +68,14 @@ class CheckoutController extends Controller
                 'country' => $data['country'],
             ]);
 
-            // Fetch cart items
             $cart = $user->cart()->with('product')->get();
 
             if ($cart->isEmpty()) {
                 abort(400, 'Cart is empty.');
             }
 
-            // Calculate total
             $total = $cart->sum(fn($item) => $item->quantity * $item->product->price);
 
-            // Create the order
             $order = Order::create([
                 'user_id' => $user->id,
                 'payment_method' => $data['payment_method'],
@@ -91,7 +88,6 @@ class CheckoutController extends Controller
                 'status' => 'pending',
             ]);
 
-            // Save order items
             foreach ($cart as $item) {
                 OrderItem::create([
                     'order_id' => $order->id,
@@ -101,11 +97,10 @@ class CheckoutController extends Controller
                 ]);
             }
 
-            // Clear the user's cart
             $user->cart()->delete();
         });
 
-        // Trigger toast notification
-        return back()->with('admin-toast', ['message' => 'Order placed successfully!']);
+        // Redirect to the orders page instead of back
+        return redirect()->route('orders.index')->with('success', 'Order placed successfully!');
     }
 }

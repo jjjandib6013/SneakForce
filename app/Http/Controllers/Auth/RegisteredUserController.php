@@ -70,7 +70,7 @@ class RegisteredUserController extends Controller
                 'password.confirmed' => 'Password confirmation does not match.',
             ]
         );
-
+        
         // Create user using validated data
         $user = User::create([
             'name' => $validated['name'],

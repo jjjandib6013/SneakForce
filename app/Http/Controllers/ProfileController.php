@@ -16,8 +16,14 @@ class ProfileController extends Controller
      */
     public function edit()
     {
+        $user = Auth::user();
+
+        // Fetch last order if available
+        $lastOrder = $user->orders()->latest()->first();
+
         return view('profile.edit', [
-            'user' => Auth::user(),
+            'user' => $user,
+            'prefill' => $lastOrder, // may be null
         ]);
     }
 
@@ -34,22 +40,15 @@ class ProfileController extends Controller
             'city' => ['nullable', 'string', 'max:255'],
             'province' => ['nullable', 'string', 'max:255'],
             'postal_code' => ['nullable', 'string', 'max:20'],
-            // removed payment_method
-            // removed total (should NOT be stored in user profile)
         ]);
 
         $user = Auth::user();
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'city' => $request->city,
-            'province' => $request->province,
-            'postal_code' => $request->postal_code,
-        ]);
+        $user->update($request->only([
+            'name','email','phone','address','city','province','postal_code'
+        ]));
 
-        return redirect()->route('profile.edit')->with('status', 'Profile updated!');
+        // Use the exact value Blade is checking for
+        return redirect()->route('profile.edit')->with('status', 'profile-updated');
     }
 
     /**
